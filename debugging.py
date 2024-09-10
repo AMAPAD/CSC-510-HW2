@@ -1,37 +1,74 @@
+"""
+merge_sort.py
+
+This module implements the Merge Sort algorithm, a divide-and-conquer sorting algorithm.
+It splits the input array into smaller sub-arrays, recursively sorts them, and then
+merges the sorted sub-arrays to produce the final sorted array.
+
+Functions:
+    mergeSort(arr): Recursively splits an array into halves and merges the sorted halves.
+    recombine(left_arr, right_arr): Merges two sorted arrays into one sorted array.
+    
+Example usage:
+    arr = rand.random_array([None] * 20)
+    sorted_arr = mergeSort(arr)
+    print(sorted_arr)
+"""
+
 import rand
 
 
-def mergeSort(arr):
+def merge_sort(arr):
+    """
+    Recursively sorts an array using the Merge Sort algorithm.
+
+    Args:
+        arr (list): The array to be sorted.
+
+    Returns:
+        list: A new array containing the sorted elements of the input array.
+    """
+
     if len(arr) == 1:
         return arr
 
     half = len(arr) // 2
 
-    return recombine(mergeSort(arr[:half]), mergeSort(arr[half:]))
+    return recombine(merge_sort(arr[:half]), merge_sort(arr[half:]))
 
 
-def recombine(leftArr, rightArr):
-    leftIndex = 0
-    rightIndex = 0
-    mergeArr = [None] * (len(leftArr) + len(rightArr))
-    while leftIndex < len(leftArr) and rightIndex < len(rightArr):
-        if leftArr[leftIndex] < rightArr[rightIndex]:
-            rightIndex += 1
-            mergeArr[leftIndex + rightIndex] = leftArr[leftIndex]
+def recombine(left_arr, right_arr):
+    """
+    Merges two sorted arrays into one sorted array.
+
+    Args:
+        left_arr (list): The left half of the array, already sorted.
+        right_arr (list): The right half of the array, already sorted.
+
+    Returns:
+        list: A new array that contains all elements of left_arr and right_arr, sorted.
+    """
+    left_index = 0
+    right_index = 0
+    merge_arr = [None] * (len(left_arr) + len(right_arr))
+    while left_index < len(left_arr) and right_index < len(right_arr):
+        if left_arr[left_index] < right_arr[right_index]:
+            right_index += 1
+            merge_arr[left_index + right_index] = left_arr[left_index]
         else:
-            leftIndex += 1
-            mergeArr[leftIndex + rightIndex] = rightArr[rightIndex]
+            left_index += 1
+            merge_arr[left_index + right_index] = right_arr[right_index]
 
-    for i in range(rightIndex, len(rightArr)):
-        mergeArr[leftIndex + rightIndex] = rightArr[i]
+    for i in range(right_index, len(right_arr)):
+        merge_arr[left_index + right_index] = right_arr[i]
 
-    for i in range(leftIndex, len(leftArr)):
-        mergeArr[leftIndex + rightIndex] = leftArr[i]
+    for i in range(left_index, len(left_arr)):
+        merge_arr[left_index + right_index] = left_arr[i]
 
-    return mergeArr
+    return merge_arr
 
 
-arr = rand.random_array([None] * 20)
-arr_out = mergeSort(arr)
+arr_in = rand.random_array([None] * 20)
+arr_out = merge_sort(arr_in)
 
 print(arr_out)
