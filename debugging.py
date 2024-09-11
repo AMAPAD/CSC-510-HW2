@@ -29,6 +29,9 @@ def merge_sort(arr):
         list: A new array containing the sorted elements of the input array.
     """
 
+    if not all(isinstance(x, (int, float)) for x in arr):
+        raise ValueError("Input array must contain only integers or floats")
+
     if len(arr) <= 1:
         return arr
 
