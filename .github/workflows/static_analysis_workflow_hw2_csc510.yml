@@ -61,10 +61,11 @@ jobs:
         run: cat post_traces/pyright_trace.txt
 
       - name: Commit changes
+        continue-on-error: true
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'github-actions@github.com'
-          git pull
+          git pull --rebase # Use rebase to integrate remote changes smoothly
           git add .
           git diff --staged --exit-code || git commit -m "Applied autopep8 and static analysis tools (pylint and pyright) fixes" || echo "No changes to commit"
           git push
