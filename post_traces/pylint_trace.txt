@@ -1,0 +1,16 @@
+************* Module test_merge_sort
+test_merge_sort.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+test_merge_sort.py:5:0: C0116: Missing function or method docstring (missing-function-docstring)
+test_merge_sort.py:11:0: C0116: Missing function or method docstring (missing-function-docstring)
+test_merge_sort.py:17:0: C0116: Missing function or method docstring (missing-function-docstring)
+test_merge_sort.py:23:0: C0116: Missing function or method docstring (missing-function-docstring)
+test_merge_sort.py:29:0: C0116: Missing function or method docstring (missing-function-docstring)
+test_merge_sort.py:35:0: C0116: Missing function or method docstring (missing-function-docstring)
+test_merge_sort.py:41:0: C0116: Missing function or method docstring (missing-function-docstring)
+test_merge_sort.py:47:0: C0116: Missing function or method docstring (missing-function-docstring)
+test_merge_sort.py:53:0: C0116: Missing function or method docstring (missing-function-docstring)
+test_merge_sort.py:59:0: C0116: Missing function or method docstring (missing-function-docstring)
+
+-----------------------------------
+Your code has been rated at 8.57/10
+

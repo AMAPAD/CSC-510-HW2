@@ -2,6 +2,7 @@
 [![Python](https://img.shields.io/badge/Python-3.13%2C%203.12-blue.svg)](https://www.python.org)
 ![Platform](https://img.shields.io/badge/Platform-Linux%2C%20Windows-blue)
 [![Build, Lint and Test](https://github.com/AMAPAD/CSC-510-HW2/actions/workflows/pytest_workflow_hw2_csc510.yml/badge.svg?branch=main)](https://github.com/AMAPAD/CSC-510-HW2/actions/workflows/pytest_workflow_hw2_csc510.yml)
+[![Code Analysis](https://github.com/AMAPAD/CSC-510-HW2/actions/workflows/static_analysis_workflow_hw2_csc510.yml/badge.svg)](https://github.com/AMAPAD/CSC-510-HW2/actions/workflows/static_analysis_workflow_hw2_csc510.yml)
 [![Coverage Status](https://coveralls.io/repos/github/AMAPAD/CSC-510-HW2/badge.svg?branch=main)](https://coveralls.io/github/AMAPAD/CSC-510-HW2?branch=main)
 ![GitHub Repo Size](https://img.shields.io/github/repo-size/AMAPAD/CSC-510-HW2)
 
