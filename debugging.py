@@ -68,7 +68,7 @@ def recombine(left_arr, right_arr):
     while right_index < len(right_arr):
         merge_arr[left_index + right_index] = right_arr[right_index]
         right_index += 1
-        
+
     return merge_arr
 
 
