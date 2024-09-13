@@ -48,7 +48,7 @@ jobs:
 
       - name: Run Pylint
         continue-on-error: true
-        run: pylint **/*.py > post_traces/pylint_trace.txt
+        run: pylint **/*.py --output-format=colorized --reports=y > post_traces/pylint_trace.txt 2>&1
 
       - name: Display Pylint Results
         run: cat post_traces/pylint_trace.txt
@@ -63,12 +63,12 @@ jobs:
       - name: Commit changes
         continue-on-error: true
         run: |
-          git config --global user.name 'Akshay Dongare'
-          git config --global user.email 'akshayd02@gmail.com'
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'github-actions@github.com'
           git add .  # Ensure all changes are staged
           git stash  # Stash any unstaged changes
           git pull --rebase  # Now safely rebase
           git stash pop  # Apply stashed changes back
           git add .  # Re-stage all changes
-          git diff --staged --exit-code || git commit -m "Applied autopep8 and static analysis tools (pylint and pyright) fixes via github workflow" || echo "No changes to commit"
+          git diff --staged --exit-code || git commit -m "Applied autopep8 and static analysis tools (pylint and pyright) fixes via github workflow " || echo "No changes to commit"
           git push
