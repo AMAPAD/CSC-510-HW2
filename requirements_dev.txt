@@ -1,0 +1,4 @@
+pytest
+coverage
+coverage_enable_subprocess
+flake8
