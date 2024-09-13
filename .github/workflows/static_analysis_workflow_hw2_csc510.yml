@@ -13,7 +13,15 @@ permissions:
 
 jobs:
   analysis:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # fail-fast==false Strategy dictates that if one action fails, all other strategies won't cascade-fail. By setting this, we can see which versions and which operating systems are failing.
+      matrix:
+        os: [ubuntu, windows, macos] # Labels copied from https://github.com/actions/runner-images
+        python-version: ["3.12","3.13"] #Testing on 1 stable python version ie. 3.12 and on 1 pre-release version ie. 3.13. #List of python versions: https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
+    
+    name: ${{ matrix.os }} / ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -23,14 +31,20 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
 
       - name: Install Dependencies
         run: |
           pip install -r requirements_dev.txt
 
       - name: Run autopep8
-        run: autopep8 --in-place --recursive .
+        run: |
+          autopep8 --in-place --recursive .
+          git diff > post_traces/autopep8_changes.txt
+
+      - name: Display autopep8 Changes
+        run: cat post_traces/autopep8_changes.txt
 
       - name: Run Pylint
         continue-on-error: true
@@ -48,8 +62,8 @@ jobs:
 
       - name: Commit changes
         run: |
-          git config --global user.name 'Akshay Dongare'
-          git config --global user.email 'akshayd02@gmail.com'
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'github-actions@github.com'
           git add .
-          git diff --staged --exit-code || git commit -m "Apply autopep8 and static analysis tools (pylint, pyright) fixes" || echo "No changes to commit"
+          git diff --staged --exit-code || git commit -m "Applied autopep8 and static analysis tools (pylint and pyright) fixes" || echo "No changes to commit"
           git push
