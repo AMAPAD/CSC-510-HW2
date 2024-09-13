@@ -8,10 +8,11 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest, windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           ref: ${{ github.head_ref }}
+          
       - name: autopep8
         id: autopep8
         uses: peter-evans/autopep8@v2
