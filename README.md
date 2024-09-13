@@ -14,6 +14,6 @@ This repository contains code for CSC510-HW2:Debugging
 
 # Description
 * Applied autopep8 and fixed issues flagged by pylint and pyright.
-* Debugged and fixed mergeSort in hw2_debugging.py and added 3 pytest cases.
+* Debugged and fixed merge sort in debugging.py and added 10 pytest cases.
 * Configured autopep8, pylint, pyright, and pytest to run on every commit.
 * Added badges for static analysis and CI.
