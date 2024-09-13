@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false # fail-fast==false Strategy dictates that if one action fails, all other strategies won't cascade-fail. By setting this, we can see which versions and which operating systems are failing.
       matrix:
-        os: [ubuntu, windows, macos] # Labels copied from https://github.com/actions/runner-images
+        os: [ubuntu, windows] # Labels copied from https://github.com/actions/runner-images
         python-version: ["3.12","3.13"] #Testing on 1 stable python version ie. 3.12 and on 1 pre-release version ie. 3.13. #List of python versions: https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
     
     name: ${{ matrix.os }} / ${{ matrix.python-version }}
