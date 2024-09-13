@@ -1,0 +1,55 @@
+name: Build, Lint and Test 
+
+on:
+  push: #trigger to allow the workflow to run on push/commit to all branches
+  pull_request: #trigger to allow the workflow to run on all created pull requests
+
+permissions:
+  contents: read #refer to https://docs.github.com/en/rest/authentication/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-contents
+
+jobs:
+  run-tests:
+    strategy:
+      fail-fast: false # fail-fast==false Strategy dictates that if one action fails, all other strategies won't cascade-fail. By setting this, we can see which versions and which operating systems are failing.
+      matrix:
+        os: [ubuntu, windows, macos] # Labels copied from https://github.com/actions/runner-images
+        python-version: ["3.12","3.13"] #Testing on 1 stable python version ie. 3.12 and on 1 pre-release version ie. 3.13. #List of python versions: https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
+    
+    name: ${{ matrix.os }} / ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4 #performs set of actions provided by github at https://github.com/actions/checkout (v4 is latest version as of time of writing this)
+      
+    - name: Setup Python
+      uses: actions/setup-python@v5  #performs set of actions provided by github at https://github.com/actions/setup-python (v5 is latest version as of time of writing this)
+      with:
+        python-version: ${{ matrix.python-version }} #sets up all the python versions mentioned in the `python-version` variable set above in `matrix`
+        allow-prereleases: true #check out https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#allow-pre-releases
+      
+    - name: Install Dependencies
+      run: |  
+        python -m pip install --upgrade pip  
+        pip install -r requirements_dev.txt
+        
+    - name: Lint with flake8 #taken from https://github.com/actions/starter-workflows/blob/main/ci/python-app.yml
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        
+    - name: Test with pytest  
+      run: |  
+        coverage run -m pytest -v -s
+      continue-on-error: true  
+    
+    - name: Coveralls GitHub Action
+      uses: coverallsapp/github-action@v2.3.0
+
+    # Can be used as an alternative to Coveralls
+    #- name: Generate Coverage Report  
+    #  run: |  
+    #    coverage report -m  
+        
