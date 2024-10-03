@@ -5,7 +5,7 @@ on:
   pull_request: #trigger to allow the workflow to run on all created pull requests
 
 permissions:
-  contents: read #refer to https://docs.github.com/en/rest/authentication/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-contents
+  contents: write #refer to https://docs.github.com/en/rest/authentication/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-contents
 
 jobs:
   run-tests:
