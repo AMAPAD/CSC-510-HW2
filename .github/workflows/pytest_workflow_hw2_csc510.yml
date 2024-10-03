@@ -53,6 +53,7 @@ jobs:
       if: always()  # Ensure this step runs even if previous steps fail
       with:
         name: "Pytest Results"
+        reporter: 'java-junit'
         path: "pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}/results-${{ github.run_number }}-${{ github.run_attempt }}.xml"
         token: ${{ secrets.GITHUB_TOKEN }}
   
