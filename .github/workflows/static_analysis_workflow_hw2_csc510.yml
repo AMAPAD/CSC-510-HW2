@@ -1,4 +1,4 @@
-name: Code Analysis
+name: Static Analysis
 
 on:
   push:
@@ -14,13 +14,13 @@ permissions:
 jobs:
   analysis:
     strategy:
-      fail-fast: false # fail-fast==false Strategy dictates that if one action fails, all other strategies won't cascade-fail. By setting this, we can see which versions and which operating systems are failing.
+      fail-fast: false
       matrix:
-        os: [ubuntu, macos, windows] # Labels copied from https://github.com/actions/runner-images
-        python-version: ["3.13","3.12"] #Testing on 1 stable python version ie. 3.12 and on 1 pre-release version ie. 3.13. #List of python versions: https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.13", "3.12"]
     
     name: ${{ matrix.os }} / ${{ matrix.python-version }}
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout Repository
@@ -35,8 +35,7 @@ jobs:
           allow-prereleases: true
 
       - name: Install Dependencies
-        run: |
-          pip install -r requirements_dev.txt
+        run: pip install -r requirements_dev.txt
 
       - name: Run autopep8
         run: |
@@ -65,19 +64,11 @@ jobs:
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'github-actions@github.com'
-          git stash  # Stash any changes
-          git pull --rebase  # Attempt to rebase
-          if [ $? -ne 0 ]; then  # Check if rebase was successful
-            echo "Rebase failed, attempting to resolve conflicts"
-            git rebase --abort  # Abort the rebase if it fails
-            git checkout --theirs .  # Resolve conflicts by preferring remote changes
-            git add .  # Add resolved files
-          fi
-          git stash pop  # Apply stashed changes
-          git add .  # Add all changes
-          git diff --staged --exit-code || git commit -m "Applied autopep8 and static analysis tools (pylint and pyright) fixes"
-          if [ $? -eq 0 ]; then
-            git push
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
           else
-            echo "No changes to commit"
+            DATE=$(date '+%Y-%m-%d %H:%M:%S')
+            git commit -m "Code quality improvements by static analysis workflow applied on $DATE"
+            git push
           fi
