@@ -1,4 +1,4 @@
-name: Build, Lint and Test 
+name: Build, Lint, Test with Pytest and Publish Pytest Report 
 
 on:
   push: #trigger to allow the workflow to run on push/commit to all branches
@@ -45,8 +45,15 @@ jobs:
       run: |
         mkdir -p pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}
         coverage run -m pytest --verbose -s --junitxml=pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}/results-${{ github.run_number }}-${{ github.run_attempt }}.xml
-        echo "Listing generated files:"
-        ls -la pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}/
+
+    - name: List generated files on Unix
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      run: ls -la pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}/
+
+    - name: List generated files on Windows
+      if: runner.os == 'Windows'
+      run: Get-ChildItem -Path pytest-reports/${{ github.run_id }}/${{ matrix.python-version }} -Force | Format-List
+      shell: powershell
 
     - name: Upload pytest test results for inspection
       uses: actions/upload-artifact@v4
