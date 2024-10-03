@@ -46,12 +46,12 @@ jobs:
         coverage run -m pytest --verbose -s --junitxml=test-results/${{ github.run_id }}/${{ matrix.python-version }}/results-${{ github.run_number }}-${{ github.run_attempt }}.xml
       continue-on-error: true
       
-      - name: Upload pytest test results
-        uses: actions/upload-artifact@v4
-        with:
-          name: pytest-reports-${{ matrix.python-version }}-${{ github.run_id }}
-          path: pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}
-        if: ${{ always() }}  # Always run this step
+    - name: Upload pytest test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: pytest-reports-${{ matrix.python-version }}-${{ github.run_id }}
+        path: pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}
+      if: ${{ always() }}  # Always run this step
     
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v2.3.0
