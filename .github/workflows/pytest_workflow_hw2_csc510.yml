@@ -43,6 +43,8 @@ jobs:
     - name: Test with pytest  
       run: |
         mkdir -p pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}
+        echo "Directories created:"
+        ls -alh pytest-reports/
         coverage run -m pytest --verbose -s --junitxml=test-results/${{ github.run_id }}/${{ matrix.python-version }}/results-${{ github.run_number }}-${{ github.run_attempt }}.xml
       continue-on-error: true
       
@@ -52,7 +54,10 @@ jobs:
         name: pytest-reports-${{ matrix.python-version }}-${{ github.run_id }}
         path: pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}
       if: ${{ always() }}  # Always run this step
-    
+      
+    - name: List Test Results
+      run: ls -R pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}
+  
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v2.3.0
 
