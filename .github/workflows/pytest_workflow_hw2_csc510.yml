@@ -54,7 +54,6 @@ jobs:
       with:
         name: "Pytest Results"
         path: "pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}/results-${{ github.run_number }}-${{ github.run_attempt }}.xml"
-        reporter: 'junit'  # Specify that the format is JUnit
         token: ${{ secrets.GITHUB_TOKEN }}
   
     - name: Coveralls GitHub Action
