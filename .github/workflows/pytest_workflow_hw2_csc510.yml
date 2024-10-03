@@ -47,16 +47,15 @@ jobs:
         ls -alh pytest-reports/
         coverage run -m pytest --verbose -s --junitxml=test-results/${{ github.run_id }}/${{ matrix.python-version }}/results-${{ github.run_number }}-${{ github.run_attempt }}.xml
       continue-on-error: true
-      
-    - name: Upload pytest test results
-      uses: actions/upload-artifact@v4
+          
+    - name: Publish Test Report
+      uses: dorny/test-reporter@v1
+      if: always()  # Ensure this step runs even if previous steps fail
       with:
-        name: pytest-reports-${{ matrix.python-version }}-${{ github.run_id }}
-        path: pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}
-      if: ${{ always() }}  # Always run this step
-      
-    - name: List Test Results
-      run: ls -R pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}
+        name: "Pytest Results"
+        path: "pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}/results-${{ github.run_number }}-${{ github.run_attempt }}.xml"
+        reporter: 'junit'  # Specify that the format is JUnit
+        token: ${{ secrets.GITHUB_TOKEN }}
   
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v2.3.0
