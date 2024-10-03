@@ -41,24 +41,24 @@ jobs:
       - name: Run autopep8
         run: |
           autopep8 --in-place --recursive .
-          git diff > post_traces/autopep8_changes.txt
+          git diff > post_traces/autopep8_trace__from_workflow.txt
 
       - name: Display autopep8 Changes
-        run: cat post_traces/autopep8_changes.txt
+        run: cat post_traces/autopep8_trace__from_workflow.txt
 
       - name: Run Pylint
         continue-on-error: true
-        run: pylint **/*.py --output-format=colorized --reports=y > post_traces/pylint_trace.txt 2>&1
+        run: pylint **/*.py --output-format=colorized --reports=y > post_traces/pylint_trace_from_workflow.txt 2>&1
 
       - name: Display Pylint Results
-        run: cat post_traces/pylint_trace.txt
+        run: cat post_traces/pylint_trace_from_workflow.txt
 
       - name: Run Pyright
         continue-on-error: true
-        run: pyright **/*.py > post_traces/pyright_trace.txt
+        run: pyright **/*.py > post_traces/pyright_trace_from_workflow.txt
 
       - name: Display Pyright Results
-        run: cat post_traces/pyright_trace.txt
+        run: cat post_traces/pyright_trace_from_workflow.txt
 
       - name: Commit changes
         continue-on-error: true
