@@ -40,21 +40,26 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         
-    - name: Test with pytest  
+    - name: Run tests and generate report
       run: |
         mkdir -p pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}
-        echo "Directories created:"
-        ls -alh pytest-reports/
-        coverage run -m pytest --verbose -s --junitxml=test-results/${{ github.run_id }}/${{ matrix.python-version }}/results-${{ github.run_number }}-${{ github.run_attempt }}.xml
-      continue-on-error: true
-          
+        coverage run -m pytest --verbose -s --junitxml=pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}/results-${{ github.run_number }}-${{ github.run_attempt }}.xml
+        echo "Listing generated files:"
+        ls -la pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}/
+
+    - name: Upload pytest test results for inspection
+      uses: actions/upload-artifact@v4
+      with:
+        name: pytest-reports-${{ matrix.python-version }}-${{ github.run_id }}
+        path: pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}/
+
     - name: Publish Test Report
       uses: dorny/test-reporter@v1
-      if: always()  # Ensure this step runs even if previous steps fail
+      if: always()
       with:
         name: "Pytest Results"
+        path: "pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}/*.xml"
         reporter: 'java-junit'
-        path: "pytest-reports/${{ github.run_id }}/${{ matrix.python-version }}/results-${{ github.run_number }}-${{ github.run_attempt }}.xml"
         token: ${{ secrets.GITHUB_TOKEN }}
   
     - name: Coveralls GitHub Action
