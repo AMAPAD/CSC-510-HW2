@@ -75,5 +75,9 @@ jobs:
           fi
           git stash pop  # Apply stashed changes
           git add .  # Add all changes
-          git diff --staged --exit-code || git commit -m "Applied autopep8 and static analysis tools (pylint and pyright) fixes" || echo "No changes to commit"
-          git push
+          git diff --staged --exit-code || git commit -m "Applied autopep8 and static analysis tools (pylint and pyright) fixes"
+          if [ $? -eq 0 ]; then
+            git push
+          else
+            echo "No changes to commit"
+          fi
