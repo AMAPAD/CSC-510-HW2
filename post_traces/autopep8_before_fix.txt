@@ -1,0 +1,60 @@
+--- original/./debugging.py
++++ fixed/./debugging.py
+@@ -1,4 +1,5 @@
+ import rand
++
+ 
+ def mergeSort(arr):
+     if (len(arr) == 1):
+@@ -7,6 +8,7 @@
+     half = len(arr)//2
+ 
+     return recombine(mergeSort(arr[:half]), mergeSort(arr[half:]))
++
+ 
+ def recombine(leftArr, rightArr):
+     leftIndex = 0
+@@ -22,13 +24,14 @@
+ 
+     for i in range(rightIndex, len(rightArr)):
+         mergeArr[leftIndex + rightIndex] = rightArr[i]
+-    
++
+     for i in range(leftIndex, len(leftArr)):
+         mergeArr[leftIndex + rightIndex] = leftArr[i]
+ 
+     return mergeArr
+ 
++
+ arr = rand.random_array([None] * 20)
+ arr_out = mergeSort(arr)
+ 
+-print(arr_out)
+\ No newline at end of file
++print(arr_out)
+--- original/./rand.py
++++ fixed/./rand.py
+@@ -1,8 +1,10 @@
+ import subprocess
++
+ 
+ def random_array(arr):
+     shuffled_num = None
+     for i in range(len(arr)):
+-        shuffled_num = subprocess.run(["shuf", "-i1-20", "-n1"], capture_output=True)
++        shuffled_num = subprocess.run(
++            ["shuf", "-i1-20", "-n1"], capture_output=True)
+         arr[i] = int(shuffled_num.stdout)
+-    return arr
+\ No newline at end of file
++    return arr
+
+
+
+
+
+
+
+
+
+
